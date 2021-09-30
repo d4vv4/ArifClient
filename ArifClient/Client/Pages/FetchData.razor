@@ -1,0 +1,53 @@
+﻿@page "/fetchdata"
+@using ArifClient.Shared.Models
+@inject HttpClient Http
+@inject LoggedInUser loggedInUser;
+
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (readings == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (!loggedInUser.isLoggedIn)
+    {
+        <p>Logga in först</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reading in readings)
+                {
+                    <tr>
+                        <td>@reading.Temperature</td>
+                        <td>@reading.Humidity</td>
+                        <td>@reading.Timestamp</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private List<HumidorReading> readings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        readings = await Http.GetFromJsonAsync<List<HumidorReading>>("Humidor");
+    }
+
+}
