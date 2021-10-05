@@ -4,9 +4,9 @@
 @inject LoggedInUser loggedInUser;
 
 
-<h1>Weather forecast</h1>
+<h1>Arifs Cigarrer</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Information från Cigarrhumidor</p>
 
 @if (readings == null)
 {
@@ -20,26 +20,31 @@ else
     }
     else
     {
-        <table class="table">
+        <table class="table-striped table-responsive-lg" >
             <thead>
                 <tr>
-                    <th>Temperature</th>
-                    <th>Humidity</th>
-                    <th>Time</th>
+                    <th>Temperatur</th>
+                    <th>Luftfuktighet</th>
+                    <th>Tid</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var reading in readings)
                 {
                     <tr>
-                        <td>@reading.Temperature</td>
-                        <td>@reading.Humidity</td>
+                        <td>@reading.Temperature C</td>
+                        <td>@reading.Humidity %</td>
                         <td>@reading.Timestamp</td>
                     </tr>
                 }
             </tbody>
         </table>
     }
+
+    @if (loggedInUser.isLoggedIn)
+                {
+                    <button class="alert-danger" >Logga ut</button>
+                }
 }
 
 @code {
