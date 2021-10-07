@@ -1,10 +1,12 @@
 ﻿@page "/fetchdata"
 @using ArifClient.Shared.Models
 @inject HttpClient Http
-@inject LoggedInUser loggedInUser;
+@inject LoggedInUser loggedInUser
+@inject NavigationManager nav
 
 
-<h1>Arifs Cigarrer</h1>
+
+<h1>Arifs Humidor-Data</h1>
 
 <p>Information från Cigarrhumidor</p>
 
@@ -20,7 +22,7 @@ else
     }
     else
     {
-        <table class="table-striped table-responsive-lg" >
+        <table class="table-striped table-responsive-lg">
             <thead>
                 <tr>
                     <th>Temperatur</th>
@@ -42,9 +44,9 @@ else
     }
 
     @if (loggedInUser.isLoggedIn)
-                {
-                    <button class="alert-danger" >Logga ut</button>
-                }
+    {
+        <button class="btn btn-danger mt-2" @onclick="LogOut">Logga ut</button>
+    }
 }
 
 @code {
@@ -53,6 +55,12 @@ else
     protected override async Task OnInitializedAsync()
     {
         readings = await Http.GetFromJsonAsync<List<HumidorReading>>("Humidor");
+    }
+    protected void LogOut()
+    {
+        loggedInUser.isLoggedIn = false;
+        loggedInUser.Name = "";
+        nav.NavigateTo("/");
     }
 
 }
